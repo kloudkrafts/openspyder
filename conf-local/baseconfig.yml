@@ -1,0 +1,13 @@
+DEFAULT_TIMESPAN: 1
+PAGE_SIZE: 300
+APP_NAME: openspyder
+DUMP_JSON: true
+# Challenge the dependency b/w logging handler and config.py
+LOG_CONFIG: logging_verbose
+
+Modules:
+  pandaPipelinesEngine : null
+  pandaXLSConnector : null
+  pandaSQLConnector : null
+  mongoDBConnector : mongoDBQueries
+  openDataConnector: openDataModels

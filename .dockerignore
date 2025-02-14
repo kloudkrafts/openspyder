@@ -1,7 +1,4 @@
-AzureFunctions/**
-provisioning/**
 local_only/**
 temp/*
 tests/*
-azure-pipelines.yml
 **/__pycache__/**

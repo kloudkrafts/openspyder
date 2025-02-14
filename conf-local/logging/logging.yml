@@ -1,7 +1,7 @@
 version: 1
 
 loggers:
-  kspyder:
+  main:
     handlers: [console]
     level: INFO
 

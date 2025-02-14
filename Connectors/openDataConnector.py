@@ -1,4 +1,3 @@
-import jmespath
 import requests
 
 from common.config import MODULES_MAP, BASE_FILE_HANDLER as fh
@@ -35,9 +34,9 @@ class openDataConnector(RESTExtractor):
 
     def read_query(self, model, start_token:int = 1, batch_size:int = 100, **params):
 
-        params, start_token, batch_size = self.preprocess_params(params,start_token=start_token,batch_size=batch_size)
+        actual_start_token, params = self.preprocess_params(params,start_token=start_token,batch_size=batch_size)
 
-        url, headers, valid_params = self.build_request(model, baseurl = self.api.base_url, **params)
+        url, headers, valid_params = self.build_request(model, baseurl = self.api.base_url, start_token=actual_start_token, **params)
         
         # pass the request, get http status and response payload
         response = requests.get(url, headers = headers, params = valid_params)

@@ -1,11 +1,4 @@
-azure-core
-azure-identity
-azure-keyvault-secrets
-azure-mgmt-resourcegraph
-azure-functions
-azure-functions-durable
 PyMySQL
-pyodbc
 PyYAML
 SQLAlchemy
 SQLAlchemy-JSONField
@@ -14,3 +7,4 @@ cython
 numpy
 pandas
 pymongo
+jmespath

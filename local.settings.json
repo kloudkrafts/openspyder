@@ -1,7 +1,0 @@
-{
-  "IsEncrypted": false,
-  "Values": {
-    "AzureWebJobsStorage": "%AZURE_WEB_JOBS_CSTRING%",
-    "FUNCTIONS_WORKER_RUNTIME": "python"
-  }
-}
