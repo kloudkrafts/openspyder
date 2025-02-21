@@ -13,6 +13,7 @@ LOG_CONFIG_FOLDER = os.path.join(CONF_FOLDER,'logging')
 ENGINES_FOLDER = os.path.join(ROOT_FOLDER,'Engines')
 CONNECTORS_FOLDER = os.path.join(ROOT_FOLDER,'Connectors')
 TEMP_FOLDER = os.path.join(ROOT_FOLDER,'temp')
+DATA_FOLDER = os.path.join(ROOT_FOLDER,'temp')
 LOG_FOLDER = os.path.join(ROOT_FOLDER,'log')
 
 if not os.path.isdir(TEMP_FOLDER):
@@ -28,6 +29,7 @@ sys.path.insert(0,CONF_FOLDER)
 sys.path.insert(0,CONNECTORS_FOLDER)
 sys.path.insert(0,ENGINES_FOLDER)
 sys.path.insert(0,TEMP_FOLDER)
+sys.path.insert(0,DATA_FOLDER)
 sys.path.insert(0,LOG_FOLDER)
 
 BASE_FILE_HANDLER = FileHandler(input_folder=CONF_FOLDER,output_folder=TEMP_FOLDER)

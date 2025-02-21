@@ -8,6 +8,7 @@ from common.clientHandler import clientHandler
 
 from Engines.pipelineEngine import pipelineEngine
 from Connectors.mongoDBConnector import mongoDBConnector
+from Connectors.pandaMongoConnector import pandaMongoConnector
 
 
 operation = 'operation'
@@ -53,6 +54,10 @@ def get_to_mongo():
 def insert_to_mongo():
     mgconn = mongoDBConnector()
     mgconn.insert_from_jsonfile(input_file)
+
+def mongo_to_xls():
+    pdmg = pandaMongoConnector()
+    pdmg.pull_dataset(collection_name=model_name)
 
 def transform_xls():
 
