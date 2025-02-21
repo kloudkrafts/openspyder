@@ -13,10 +13,11 @@ class pandaMongoConnector(mongoDBConnector,pandaXLSConnector):
         mongoDBConnector.__init__(self)
         pandaXLSConnector.__init__(self)
 
-    def pull_dataset(self,collection_name):
+    def pull_dataset(self,collection_name,query={}):
         
+        logger.debug(collection_name)
         collection = self.db[collection_name]
-        df = collection.find_pandas_all()
+        df = collection.find_pandas_all(query)
         logger.debug(df.head())
 
         return df

@@ -57,7 +57,10 @@ def insert_to_mongo():
 
 def mongo_to_xls():
     pdmg = pandaMongoConnector()
-    pdmg.pull_dataset(collection_name=model_name)
+    for model_name in models:
+        df = pdmg.pull_dataset(model_name)
+        pdmg.save(df,model_name)
+        pdmg.close_engine()
 
 def transform_xls():
 
