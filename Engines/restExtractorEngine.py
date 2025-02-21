@@ -257,6 +257,7 @@ class RESTExtractor():
             start_token = next_token
 
             if self.rate_limit:
+                logger.debug("Sleeping for {} seconds".format(self.rate_limit))
                 time.sleep(self.rate_limit)
 
     def preprocess_params(self,params,start_token=None,batch_size=None):
@@ -291,7 +292,7 @@ class RESTExtractor():
         for key, value in self.response_map.items():
             translated_data[key] = jmespath.search(value, response_data)
 
-        # logger.debug("Translated response data: {}".format(translated_data))
+        logger.debug("Translated response data: {}".format(translated_data))
 
         # pop out the dataset and keep the rest as metadata
         data = translated_data.pop('data')
@@ -300,7 +301,8 @@ class RESTExtractor():
         logger.debug("Item metadata: {}".format(metadata))
 
         count = int(translated_data['count']) if 'count' in translated_data.keys() else len(data)
-        total_count = int(translated_data['total_count']) if 'total_count' in translated_data.keys() else None
+        total_count = translated_data['total_count'] if 'total_count' in translated_data.keys() else None
+        total_count = int(total_count) if total_count else None
         next_token = translated_data['next_token'] if 'next_token' in translated_data.keys() else None
         logger.debug("next token: {}".format(next_token))
         

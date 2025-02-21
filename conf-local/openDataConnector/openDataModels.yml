@@ -1,7 +1,7 @@
 Connector:
-    schema: opendata-fr
+    schema: OpenDataFR
     update_field: modifiedSince
-    default_batch_size: 100
+    default_batch_size: 2000
     default_rate_limit: 0.5
 
 APIs:
@@ -19,7 +19,7 @@ APIs:
     INSEE:
         name: insee
         base_url: https://api.insee.fr
-        rate_limit: 2.2
+        rate_limit: 4
         pagination_style: pages
         next_token_key: page
         batch_size_key: maxResult

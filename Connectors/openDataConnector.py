@@ -32,7 +32,7 @@ class openDataConnector(RESTExtractor):
         self.rate_limit = None
         self.batch_size = batch_size
 
-    def read_query(self, model, start_token:int = 1, batch_size:int = 100, **params):
+    def read_query(self, model, start_token=None, batch_size=None, **params):
 
         actual_start_token, params = self.preprocess_params(params,start_token=start_token,batch_size=batch_size)
 
@@ -46,7 +46,7 @@ class openDataConnector(RESTExtractor):
         # logger.debug("Raw response data: {}".format(raw_response_data))
 
         if status_code == 200:
-            data, metadata, is_truncated, next_token = self.postprocess_response(raw_response_data, model = model, start_token = start_token)
+            data, metadata, is_truncated, next_token = self.postprocess_response(raw_response_data, model = model, start_token = actual_start_token)
 
         else:
             logger.exception("Encountered error in response: {}".format(raw_response_data))

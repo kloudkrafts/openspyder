@@ -5,8 +5,8 @@ Steps:
     Output: StarterRequest
     Params:
       data:
-        - page: 1
-          pageSize: 'all'
+        - start_token: 1
+          batch_size: 2000
 
   - Name: GetToMongo.DiDoDatasets
     Job: get_data_to_mongo
@@ -28,20 +28,28 @@ Steps:
     Job: aggregate_data
     Output: MelodiDatasetIds
     Params:
-      collection_name: MelodiDatasetCatalogue
+      collection_name: OpenDataFR.INSEE.MelodiDatasetCatalogue
       pipeline:
         - $project:
-            identifier: 1
+            id: $identifier
         - $unset:
             - _id
   
-  - Name: GetToMongo.MelodiDatasets
+  - Name: GetToMongo.MelodiCatalogEntries
     Job: get_data_to_mongo
     Input: MelodiDatasetIds.data
-    Output: MelodiDatasets
+    Output: MelodiCatalogEntries
     Params:
       from_worker: openDataConnector
-      model_name: MelodiDatasets
+      model_name: MelodiCatalogEntries
+
+  # - Name: GetToMongo.MelodiDatasets
+  #   Job: get_data_to_mongo
+  #   Input: MelodiDatasetIds.data
+  #   Output: MelodiDatasets
+  #   Params:
+  #     from_worker: openDataConnector
+  #     model_name: MelodiDatasets
 
   # - Name: Extract.DatafileRids
   #   Worker: mongoDBConnector

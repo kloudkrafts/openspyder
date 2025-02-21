@@ -8,8 +8,8 @@ Steps:
     Output: OpenDatasetsSummary
     DumpCSV: false
     Params:
-      save_to: OpenData.DiDo.Datafiles.Summary
-      collection_name: DiDoDatasetCatalogue
+      save_to: OpenDataFR.DiDo.Datafiles.Summary
+      collection_name: OpenDataFR.DiDo.DiDo.DatasetCatalogue
       pipeline:
         - $unwind: $datafiles
         - $unwind: $datafiles.millesimes
@@ -39,8 +39,8 @@ Steps:
     Output: DiDoDatafilesMetadata
     DumpCSV: false
     Params:
-      save_to: OpenData.DiDo.Datafiles.Metadata
-      collection_name: DiDoDatasetCatalogue
+      save_to: OpenDataFR.DiDo.Datafiles.Metadata
+      collection_name: OpenDataFR.DiDo.DiDoDatasetCatalogue
       pipeline:
         - $unwind: $datafiles
         - $unwind: $datafiles.millesimes
@@ -63,7 +63,7 @@ Steps:
     # DumpCSV: true
     Params:
       save_to: OpenData.INSEE.MelodiDatasets.Summary
-      collection_name: MelodiDatasets
+      collection_name: OpenDataFR.INSEE.MelodiDatasets
       pipeline:
         - $unwind: $title
         - $unwind: $subtitle

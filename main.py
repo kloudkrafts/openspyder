@@ -70,7 +70,7 @@ class KwargsParse(argparse.Action):
 
 
 if __name__ == "__main__":
-
+    """Command-line for openspyder"""
 
     # Define Arg Parser
     parser = argparse.ArgumentParser(prog='kspyder')
