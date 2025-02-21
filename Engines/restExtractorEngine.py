@@ -290,15 +290,24 @@ class RESTExtractor():
         next_token = None
 
         for key, value in self.response_map.items():
-            translated_data[key] = jmespath.search(value, response_data)
+            # get all fields through JMESpath expressions, except if the keyword __ROOT__ is there.
+            # if __ROOT__ is given in the model def, then just store the full response body in list type
+            if value == "__ROOT__":
+                if type(response_data) == list:
+                    translated_data[key] = response_data
+                else:
+                    translated_data[key] = [response_data]
+            else:
+                translated_data[key] = jmespath.search(value, response_data)
 
-        logger.debug("Translated response data: {}".format(translated_data))
+        # logger.debug("Translated response data: {}".format(translated_data))
 
         # pop out the dataset and keep the rest as metadata
         data = translated_data.pop('data')
         metadata = translated_data
 
-        logger.debug("Item metadata: {}".format(metadata))
+        # logger.debug("Item metadata: {}".format(metadata))
+        logger.debug("Item data: {}".format(data))
 
         count = int(translated_data['count']) if 'count' in translated_data.keys() else len(data)
         total_count = translated_data['total_count'] if 'total_count' in translated_data.keys() else None
@@ -312,7 +321,7 @@ class RESTExtractor():
         else:
             if 'is_last' in translated_data.keys():
                 is_last = bool(translated_data['is_last'])
-                logger.debug("Is Last ? {}".format(is_last))
+                # logger.debug("Is Last ? {}".format(is_last))
                 is_truncated = not is_last
             elif next_token is not None:
                 is_truncated = (next_token != "")

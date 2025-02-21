@@ -1,15 +1,28 @@
 Steps:
 
-  # ============= Sum up DiDo catalog by datafiles ================
+  # ============================================================== #
+  # ============= Sum up DiDo catalog by datafiles =============== #
+  # ============================================================== #
 
+  - Name: MetaDataExport
+    Worker: mongoDBConnector
+    Job: aggregate_data
+    Output: DiDoMetadataReference
+    DumpCSV: true
+    Params:
+      collection_name: OpenDataFR.DiDo.DiDoMetadata
+      pipeline:
+        - $unset:
+          - _id
+  
   - Name: DatasetCatalogueSummary
     Worker: mongoDBConnector
     Job: aggregate_data
-    Output: OpenDatasetsSummary
-    DumpCSV: false
+    Output: DiDoDatasetsSummary
+    DumpCSV: true
     Params:
       save_to: OpenDataFR.DiDo.Datafiles.Summary
-      collection_name: OpenDataFR.DiDo.DiDo.DatasetCatalogue
+      collection_name: OpenDataFR.DiDo.DiDoDatasetCatalogue
       pipeline:
         - $unwind: $datafiles
         - $unwind: $datafiles.millesimes
@@ -37,7 +50,7 @@ Steps:
     Worker: mongoDBConnector
     Job: aggregate_data
     Output: DiDoDatafilesMetadata
-    DumpCSV: false
+    DumpCSV: true
     Params:
       save_to: OpenDataFR.DiDo.Datafiles.Metadata
       collection_name: OpenDataFR.DiDo.DiDoDatasetCatalogue
@@ -54,43 +67,57 @@ Steps:
             col_type: $datafiles.millesimes.columns.type
             col_unit: $datafiles.millesimes.columns.unit
 
-# ============= Sum up INSEE / Melodi catalog by datafiles ================
+
+  # ========================================================================= #
+  # ============= Sum up INSEE / Melodi catalog by datafiles ================ #
+  # ========================================================================= #
 
   - Name: Summary.MelodiDatasets
     Worker: mongoDBConnector
     Job: aggregate_data
     Output: MelodiDatasetsSummary
-    # DumpCSV: true
+    DumpCSV: true
     Params:
       save_to: OpenData.INSEE.MelodiDatasets.Summary
-      collection_name: OpenDataFR.INSEE.MelodiDatasets
+      collection_name: OpenDataFR.INSEE.MelodiCatalogEntries
       pipeline:
         - $unwind: $title
         - $unwind: $subtitle
         - $unwind: $type
+        - $unwind: $description
         - $unwind: $temporalResolution
         - $unwind: $temporalResolution.label
         - $unwind: $accrualPeriodicity
         - $unwind: $accrualPeriodicity.label
         - $unwind: $spatial
         - $unwind: $spatial.label
-        # - $unwind: $theme
-        # - $unwind: $theme.label
+        - $unwind: $theme
+        - $unwind: $theme.label
+        - $unwind: $scopeNote
+        - $unwind: $product
         - $match:
             title.lang: fr
             subtitle.lang: fr
+            description.lang: fr
             type.lang: fr
             temporalResolution.label.lang: fr
             accrualPeriodicity.label.lang: fr
             spatial.label.lang: fr
+            theme.themeTaxonomy: inseeTheme
             theme.label.lang: fr
+            scopeNote.lang: fr
         - $project:
             title: $title.content
             subtitle: $subtitle.content
             type: $type.content
+            description: $description.content
             time_resolution: $temporalResolution.label.content
             time_periodicity: $accrualPeriodicity.label.content
             geography: $spatial.label.content
             theme: $theme.label.content
+            numObservations: 1
+            numSeries: 1
+            product: 1
+            scope_note: $scopeNote.content
 
 
