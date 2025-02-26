@@ -1,0 +1,70 @@
+Steps:
+
+  # - Name: Build.StarterMetadataRequest
+  #   Job: set_static_data
+  #   Output: StarterRequest_Metadata
+  #   Params:
+  #     data:
+  #       - dimension: topics
+  #       - dimension: frequencies
+  #       - dimension: granularities
+  #       - dimension: licenses
+  #       - dimension: attachmentTypes
+
+  # - Name: Build.StarterDatasetRequest
+  #   Job: set_static_data
+  #   Output: StarterRequest_Datasets
+  #   Params:
+  #     data:
+  #       - start_token: 1
+  #         batch_size: 2000
+
+  # - Name: GetToMongo.DiDoMetadata
+  #   Job: get_data_to_mongo
+  #   Output: DiDoMetadata
+  #   Input: StarterRequest_Metadata.data
+  #   Params:
+  #     from_worker: openDataConnector
+  #     model_name: DiDoMetadata
+
+  - Name: Extract.DatafileRids
+    Worker: mongoDBConnector
+    Job: aggregate_data
+    Output: DatafileRids
+    Params:
+      save_to: OpenDataFR.DiDo.Datafiles.D4GInteresting
+      collection_name: OpenDataFR.DiDo.Datafiles.Summary
+      pipeline:
+        - $match:
+            $and:
+              - millesime: 
+                  $regex: "(2024)|(2025).+"
+              - $or:
+                  - datafile_rid: "9c90a880-4ba0-49b4-b99d-d7dd6c810dd0"
+                  - datafile_rid: "f3c2f2cb-8fb1-40fd-8733-964247744c9a"
+                  - datafile_rid: "a0ae7112-5184-4ad7-842d-87b09fd27df1"            
+        - $project:
+            rid: $datafile_rid
+            millesime: 1
+            title: $datafile_title
+            description: 1
+            topic: 1
+            frequency: 1
+            org: 1
+            start_date: 1
+            end_date: 1
+            size: 1
+            weburl: 1
+        - $unset: 
+            - _id 
+
+  - Name: Get.DatafilesByRid
+    Job: get_data_to_mongo
+    Input: DatafileRids.data
+    Output: OpenData.DiDo.Datafiles
+    Params:
+      from_worker: openDataConnector
+      model_name: DiDoDatafiles
+
+
+

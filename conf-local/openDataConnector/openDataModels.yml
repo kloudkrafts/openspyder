@@ -1,7 +1,7 @@
 Connector:
     schema: OpenDataFR
     update_field: modifiedSince
-    default_batch_size: 2000
+    default_batch_size: 100
     default_rate_limit: 0.5
 
 APIs:

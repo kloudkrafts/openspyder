@@ -33,7 +33,7 @@ class PandaPipeline():
 
         for step in self.transforms['Steps']:
             
-            step_name = step['Step']
+            step_name = step['name']
 
             # try:
             print("{} - Executing Step".format(step_name))
